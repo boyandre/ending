@@ -46,3 +46,9 @@ class LineEnding:
         self.set_ending(LineEnding.MAC)
       else:
         self.set_ending(LineEnding.UNKNOWN)
+
+def check_file(file):
+  ending = LineEnding()
+  for line in file:
+    ending.test_line(line)
+  return ending
