@@ -1,4 +1,22 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+#
+# ending
+#
+# Copyright 2011 Philipp Waehnert <phil.wnrt@googlemail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 from argparse import ArgumentParser
 from os import walk, listdir
 from os.path import join, isdir
@@ -21,24 +39,29 @@ def collect_files(globs, recursively):
             yield filename
             break
 
-parser = ArgumentParser(description = 'Shows the type of line endings of text files')
-parser.add_argument('-r', '--recursive',
-                    action = 'store_true',
-                    dest = 'recursively', 
-                    help = 'Searches files recursively')
-parser.add_argument('globs',
-                    metavar = '<files>',
-                    type = str,
-                    nargs = '+',
-                    help = 'Files or globs to be tested')
-
-args = parser.parse_args()
-
-for filename in collect_files(args.globs, args.recursively):
-  try:
-    f = open(filename, 'r')
-    ending = check_file(f)
-    print "%s: %s" % (filename, ending)
-    f.close()
-  except IOError, e:
-    print "Error: Can't open %s" % e.filename
+def main():
+  parser = ArgumentParser(description = 'Shows the type of line endings of text files')
+  parser.add_argument('-r', '--recursive',
+                      action = 'store_true',
+                      dest = 'recursively', 
+                      help = 'Searches files recursively')
+  parser.add_argument('globs',
+                      metavar = '<files>',
+                      type = str,
+                      nargs = '+',
+                      help = 'Files or globs to be tested')
+  
+  args = parser.parse_args()
+  
+  for filename in collect_files(args.globs, args.recursively):
+    try:
+      f = open(filename, 'r')
+      ending = check_file(f)
+      print "%s: %s" % (filename, ending)
+      f.close()
+    except IOError, e:
+      print "Error: Can't open %s" % e.filename
+  
+  return 0
+  
+if __name__ == '__main__': main()
