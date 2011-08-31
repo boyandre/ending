@@ -13,13 +13,13 @@ class LineEnding:
     if self.value == LineEnding.NOT_SET or self.value == LineEnding.UNKNOWN:
       return "Unknown"
     elif self.value == LineEnding.MIXED:
-      return "       Mixed line endings"
+      return "Mixed line endings"
     elif self.value == LineEnding.WINDOWS:
       return "'\\r\\n' Windows-style line endings"
     elif self.value == LineEnding.UNIX:
-      return "'\\n'   Unix-style line endings"
+      return "'\\n' Unix-style line endings"
     elif self.value == LineEnding.MAC:
-      return "'\\r'   Mac-style line endings"
+      return "'\\r' Mac-style line endings"
 
   def set_ending(self, value):
     if self.value == LineEnding.NOT_SET:
