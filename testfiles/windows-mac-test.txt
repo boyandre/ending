@@ -1,0 +1,7 @@
+Windows-style
+line
+endings
+in
+this
+file
+Mac-stylelineendingsinthisfile
