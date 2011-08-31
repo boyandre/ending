@@ -1,0 +1,47 @@
+#!/usr/bin/python
+from argparse import ArgumentParser
+from os import walk, listdir
+from os.path import join, isdir
+from fnmatch import fnmatch
+from LineEnding import LineEnding
+
+def collect_files(globs, recursively):
+  if recursively:
+    for root, paths, filenames in walk('.'):
+      for filename in filenames:
+        for glob in globs:
+          if fnmatch(filename, glob):
+            yield join(root, filename)
+            break
+  else:
+    for filename in listdir('.'):
+      if not isdir(filename):
+        for glob in globs:
+          if fnmatch(filename, glob):
+            yield filename
+            break
+
+def check_file(file):
+  ending = LineEnding()
+  for line in file:
+    ending.test_line(line)
+  return ending
+
+parser = ArgumentParser(description = 'Shows the type of line endings of text files')
+parser.add_argument('-r', '--recursive',
+                    action = 'store_true',
+                    dest = 'recursively', 
+                    help = 'Searches files recursively')
+parser.add_argument('globs',
+                    metavar = '<files>',
+                    type = str,
+                    nargs = '+',
+                    help = 'Files or globs to be tested')
+
+args = parser.parse_args()
+
+for filename in collect_files(args.globs, args.recursively):
+  f = open(filename, 'r')
+  ending = check_file(f)
+  print "%s: %s" % (filename, ending)
+  f.close()
